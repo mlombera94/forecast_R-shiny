@@ -18,6 +18,7 @@ library(shinythemes)
 library(rio)
 library(magrittr)
 library(shinyjs)
+library(rsconnect)
 
 # Increase the maximum file size upload from 5MB
 options(shiny.maxRequestSize = 30*1024^2)

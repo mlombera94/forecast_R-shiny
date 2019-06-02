@@ -1,0 +1,10 @@
+name: forecast_r-shiny
+title:
+username:
+account: mlombera
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 948011
+bundleId: 2119252
+url: https://mlombera.shinyapps.io/forecast_r-shiny/
+when: 1559251870.16657

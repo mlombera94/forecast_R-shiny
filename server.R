@@ -7095,9 +7095,9 @@ server <- function(input,output,session) {
 }
 
 # Run the application 
-shinyApp(ui = ui, server = server)
-
-forecast_R-shiny 
+#shinyApp(ui = ui, server = server)
 
 # Checks the last error
-rlang::last_error()
+#rlang::last_error()
+
+
