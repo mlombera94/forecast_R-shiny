@@ -37,7 +37,7 @@ This shiny app allows users to forecast monthly demand by applying various time 
 - There is also the option to visualize the time series data for individual SKUs such as seasonality plots, ACF plots, and decomposed plots. 
 
 ## File Format
-There is currently no file format validation built in. Files should have format as per the table below. A data set example is provided <a href=" " target="_blank">here</a>. 
+There is currently no file format validation built in. Files should have format as per the table below. A data set example is provided <a href="https://github.com/mlombera94/forecast_R-shiny/blob/master/dataset.csv" target="_blank">here</a>. 
   
 |```Date```| ```SKU #```| ```Product```| ```Country```| ```Region```| ```Demand```|
 |:---------------|:---------------|:---------------|:--------------|:---------------|:------------------|

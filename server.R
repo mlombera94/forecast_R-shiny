@@ -31,8 +31,8 @@ shinyServer(function(input, output) {
                      fill=T)
       
       # Rename columns
-      df %>% setnames(old = c("SDATE", "LEVEL0", "LEVEL3", "LEVEL5", "LEVEL6", "EBS_BH_REQ_QTY_RD"),
-                      new = c("Date", "SKU", "Product", "Market", "Region", "Booking_AC"))
+      df %>% setnames(old = c("SDATE", "LEVEL0", "LEVEL3", "LEVEL5", "LEVEL6", "SDATA4"),
+                      new = c("Date", "SKU", "Product", "Market", "Region", "Actuals"))
       
       # Convert Date variable from chr to Date
       df$Date <- as.Date(df$Date, format = "%d-%b-%y")
@@ -189,7 +189,7 @@ shinyServer(function(input, output) {
         filter(SKU %in% input$sku)
       
       subset_data <- subset_data %>% 
-        my.spread(key = c("Region", "Market", "SKU"), value = c("Booking_AC")) %>% 
+        my.spread(key = c("Region", "Market", "SKU"), value = c("Actuals")) %>% 
         pad(interval = "month")
       
       # Replace the filled in 99999.99 values with NA
@@ -2633,7 +2633,7 @@ shinyServer(function(input, output) {
                        # Convert holdout_start to yearmon format
                        arima_df_final$Holdout_Start <- as.yearmon(arima_df_final$Holdout_Start)
                        # Remove the phrase _actuals.mean from the Product name 
-                       arima_df_final$Product <- gsub("_Booking_AC", " ", arima_df_final$Product)
+                       arima_df_final$Product <- gsub("_Actuals", " ", arima_df_final$Product)
                        # Remove the date that is displayed in column name in certain ARIMA forecasts
                        arima_df_final$Product <- gsub("\\..*", "", arima_df_final$Product)
                        # Convert to Mean, Upper and Lower to integers
@@ -2893,7 +2893,7 @@ shinyServer(function(input, output) {
                        # Convert holdout_start to yearmon format
                        arfima_df_final$Holdout_Start <- as.yearmon(arfima_df_final$Holdout_Start)
                        # Remove the phrase _actuals.mean from the Product name 
-                       arfima_df_final$Product <- gsub("_Booking_AC", " ", arfima_df_final$Product)
+                       arfima_df_final$Product <- gsub("_Actuals", " ", arfima_df_final$Product)
                        # Convert to Mean, Upper and Lower to integers
                        arfima_df_final$Upper <- as.integer(arfima_df_final$Upper)
                        arfima_df_final$Mean <- as.integer(arfima_df_final$Mean)
@@ -3139,7 +3139,7 @@ shinyServer(function(input, output) {
                        # Convert holdout_start to yearmon format
                        croston_df_final$Holdout_Start <- as.yearmon(croston_df_final$Holdout_Start)
                        # Remove the phrase _actuals.mean from the Product name 
-                       croston_df_final$Product <- gsub("_Booking_AC", " ", croston_df_final$Product)
+                       croston_df_final$Product <- gsub("_Actuals", " ", croston_df_final$Product)
                        # Convert to Mean, Upper and Lower to integers
                        croston_df_final$Upper <- as.integer(croston_df_final$Upper)
                        croston_df_final$Mean <- as.integer(croston_df_final$Mean)
@@ -3360,7 +3360,7 @@ shinyServer(function(input, output) {
                        # Convert holdout_start to yearmon format
                        ets_df_final$Holdout_Start <- as.yearmon(ets_df_final$Holdout_Start)
                        # Remove the phrase _actuals.mean from the Product name 
-                       ets_df_final$Product <- gsub("_Booking_AC", " ", ets_df_final$Product)
+                       ets_df_final$Product <- gsub("_Actuals", " ", ets_df_final$Product)
                        # Convert to Mean, Upper and Lower to integers
                        ets_df_final$Upper <- as.integer(ets_df_final$Upper)
                        ets_df_final$Mean <- as.integer(ets_df_final$Mean)
@@ -3605,7 +3605,7 @@ shinyServer(function(input, output) {
                        # Convert holdout_start to yearmon format
                        hw_M_df_final$Holdout_Start <- as.yearmon(hw_M_df_final$Holdout_Start)
                        # Remove the phrase _actuals from the Product name 
-                       hw_M_df_final$Product <- gsub("_Booking_AC", " ", hw_M_df_final$Product)
+                       hw_M_df_final$Product <- gsub("_Actuals", " ", hw_M_df_final$Product)
                        
                        hw_M_df_final <- hw_M_df_final %>%
                          select(Product, Model, Parameters, Date, Mean, Upper, Lower, Holdout_Start, RMSE, MAE, MAPE) %>%
@@ -3847,7 +3847,7 @@ shinyServer(function(input, output) {
                        # Convert holdout_start to yearmon format
                        hw_MD_df_final$Holdout_Start <- as.yearmon(hw_MD_df_final$Holdout_Start)
                        # Remove the phrase _actuals.mean from the Product name 
-                       hw_MD_df_final$Product <- gsub("_Booking_AC", " ", hw_MD_df_final$Product)
+                       hw_MD_df_final$Product <- gsub("_Actuals", " ", hw_MD_df_final$Product)
                        
                        hw_MD_df_final <- hw_MD_df_final %>%
                          select(Product, Model, Parameters, Date, Mean, Upper, Lower, Holdout_Start, RMSE, MAE, MAPE) %>%
@@ -4074,7 +4074,7 @@ shinyServer(function(input, output) {
                        # Convert holdout_start to yearmon format
                        hw_A_df_final$Holdout_Start <- as.yearmon(hw_A_df_final$Holdout_Start)
                        # Remove the phrase _actuals.mean from the Product name 
-                       hw_A_df_final$Product <- gsub("_Booking_AC", " ", hw_A_df_final$Product)
+                       hw_A_df_final$Product <- gsub("_Actuals", " ", hw_A_df_final$Product)
                        
                        hw_A_df_final <- hw_A_df_final %>%
                          select(Product, Model, Parameters, Date, Mean, Upper, Lower, Holdout_Start, RMSE, MAE, MAPE) %>%
@@ -4301,7 +4301,7 @@ shinyServer(function(input, output) {
                        # Convert holdout_start to yearmon format
                        hw_AD_df_final$Holdout_Start <- as.yearmon(hw_AD_df_final$Holdout_Start)
                        # Remove the phrase _actuals.mean from the Product name 
-                       hw_AD_df_final$Product <- gsub("_Booking_AC", " ", hw_AD_df_final$Product)
+                       hw_AD_df_final$Product <- gsub("_Actuals", " ", hw_AD_df_final$Product)
                        
                        hw_AD_df_final <- hw_AD_df_final %>%
                          select(Product, Model, Parameters, Date, Mean, Upper, Lower, Holdout_Start, RMSE, MAE, MAPE) %>%
@@ -4543,7 +4543,7 @@ shinyServer(function(input, output) {
                        # Convert holdout_start to yearmon format
                        lobf_df_final$Holdout_Start <- as.yearmon(lobf_df_final$Holdout_Start)
                        # Remove the phrase _actuals.mean from the Product name
-                       lobf_df_final$Product <- gsub("_Booking_AC", " ", lobf_df_final$Product)
+                       lobf_df_final$Product <- gsub("_Actuals", " ", lobf_df_final$Product)
                        
                        lobf_df_final <- lobf_df_final %>%
                          select(Product, Model, Parameters, Date, Mean, Upper, Lower, Holdout_Start, RMSE, MAE, MAPE) %>%
@@ -4755,7 +4755,7 @@ shinyServer(function(input, output) {
                        # Convert holdout_start to yearmon format
                        ma_df_final$Holdout_Start <- as.yearmon(ma_df_final$Holdout_Start)
                        # Remove the phrase _actuals.mean from the Product name 
-                       ma_df_final$Product <- gsub("_Booking_AC", " ", ma_df_final$Product)
+                       ma_df_final$Product <- gsub("_Actuals", " ", ma_df_final$Product)
                        # Remove the date that is displayed in column name in certain ARIMA forecasts
                        ma_df_final$Product <- gsub("\\..*", "", ma_df_final$Product)
                        # Convert to Mean, Upper and Lower to integers
@@ -4977,7 +4977,7 @@ shinyServer(function(input, output) {
                        # Convert holdout_start to yearmon format
                        ses_df_final$Holdout_Start <- as.yearmon(ses_df_final$Holdout_Start)
                        # Remove the phrase _actuals.mean from the Product name 
-                       ses_df_final$Product <- gsub("_Booking_AC", " ", ses_df_final$Product)
+                       ses_df_final$Product <- gsub("_Actuals", " ", ses_df_final$Product)
                        # Convert to Mean, Upper and Lower to integers
                        ses_df_final$Upper <- as.integer(ses_df_final$Upper)
                        ses_df_final$Mean <- as.integer(ses_df_final$Mean)
@@ -5208,8 +5208,8 @@ shinyServer(function(input, output) {
                        tbats_df_final <- cbind(tbats_df, my_tbats_accuracy_DF, Holdout_Start)
                        # Convert holdout_start to yearmon format
                        tbats_df_final$Holdout_Start <- as.yearmon(tbats_df_final$Holdout_Start)
-                       # Remove the phrase Booking_AC from the Product name
-                       tbats_df_final$Product <- gsub("_Booking_AC", " ", tbats_df_final$Product)
+                       # Remove the phrase Actuals from the Product name
+                       tbats_df_final$Product <- gsub("_Actuals", " ", tbats_df_final$Product)
                        
                        tbats_df_final <- tbats_df_final %>%
                          select(Product, Model, Parameters, Date, Mean, Upper, Lower, Holdout_Start, RMSE, MAE, MAPE) %>%

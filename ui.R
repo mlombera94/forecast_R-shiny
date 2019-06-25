@@ -32,6 +32,9 @@ library(rsconnect)
 # Increase the maximum file size upload from 5MB
 options(shiny.maxRequestSize = 30*1024^2)
 
+# Example Dataset
+csvDummy <- 'https://github.com/mlombera94/forecast_R-shiny/blob/master/dataset.csv'
+
 # Define UI for application that draws a histogram
 shinyUI(
     # Creates navigation bar at the top of the webpage90i
@@ -61,6 +64,7 @@ shinyUI(
               tags$hr(),
               br(),
               # Creates the input for uploading files 
+              h5("Download the example dataset to begin", a("User created CSV with monthly data of multiple products/SKUs from various regions and countries", href=csvDummy, target="_blank")),
               fileInput("i_file", 
                         "Upload your CSV file",
                         # A character vector of MIME types; gives the browser a hint of what kind of files the server is expecting.
