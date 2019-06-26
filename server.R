@@ -10,7 +10,7 @@
 library(shiny)
 
 # Define server logic required to draw a histogram
-shinyServer(function(input, output) {
+shinyServer(function(input, output, session) {
     
     ###################################################################
     ###################### TIME SERIES FORECASTING ####################
@@ -24,39 +24,34 @@ shinyServer(function(input, output) {
       inFile <- input$i_file
       
       if (is.null(inFile)){return(NULL)}
-      df <- read.csv(inFile$datapath,
-                     header = T,
-                     strip.white=T,
-                     stringsAsFactors=F,
-                     fill=T)
+      df <- read.csv(inFile$datapath)
       
       # Rename columns
-      df %>% setnames(old = c("SDATE", "LEVEL0", "LEVEL3", "LEVEL5", "LEVEL6", "SDATA4"),
-                      new = c("Date", "SKU", "Product", "Market", "Region", "Actuals"))
+      # df %>% setnames(old = c("SDATE", "LEVEL0", "LEVEL3", "LEVEL5", "LEVEL6", "SDATA4"),
+      #                 new = c("Date", "SKU", "Product", "Market", "Region", "Actuals"))
       
       # Convert Date variable from chr to Date
-      df$Date <- as.Date(df$Date, format = "%d-%b-%y")
+      df$Date <- as.Date(df$Date, format = "%Y-%m-%d")
       
       # Convert any remaining character variables to factors
       df[sapply(df, is.character)] <- lapply(df[sapply(df, is.character)], as.factor)
       
       # Drop observations containing observations from regions 177899, 234601, 236273, 250900, 29437 and filter observations that exceed current date
       df <- df %>%
-        filter(!Region %in% c("177899", "234601", "236273", "250900", "29437"),
-               Date < as.Date(Sys.Date() %m-% months(1)),
+        filter(Date < as.Date(Sys.Date() %m-% months(1)),
                !is.na(Region),
                !is.na(Market))
       
       # Recode observations
-      df$Region <- df$Region %>%
-        recode(CLIN = "CLIN",
-               `8851` = "NA",
-               `8848` = "EU",
-               `8847` = "AS",
-               `8846` = "AF",
-               `8850` = "ME",
-               `8852` = "OC",
-               `8849` = "LA")
+      # df$Region <- df$Region %>%
+      #   recode(CLIN = "CLIN",
+      #          `8851` = "NA",
+      #          `8848` = "EU",
+      #          `8847` = "AS",
+      #          `8846` = "AF",
+      #          `8850` = "ME",
+      #          `8852` = "OC",
+      #          `8849` = "LA")
       
       #Remove "-" and replace with "_" as the "-" causes error 
       df$SKU <- gsub('-', '_', df$SKU)
