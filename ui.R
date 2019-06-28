@@ -260,7 +260,6 @@ shinyUI(
       ),
       tabPanel(
         "Batch Forecast",
-        
         ##### FORECAST TAB ##### 
         fluidPage(
           fluidRow(
@@ -408,20 +407,43 @@ shinyUI(
         "Statistical Inference",
         fluidPage(
           fluidRow(
-            tabPanel(
-              "Statistical Information on Data",
-              tabsetPanel(type = "tabs",
-                          tabPanel("Statistics", h4("Statistics table for selected data"), br(), renderDataTable(""), value = 1),
-                          tabPanel("Seasonality Plot", h4("Displays seasonal data by year"), h6("Note: Data must have a minimum of 13 observations for seasonal plot"), br(),
-                                   plotOutput("seasonal_plot"), value = 2),
-                          tabPanel("ACF Plot", h4("Displays the correlation between the number of periods between observations"), br(),
-                                   plotOutput("acf_plot")),
-                          tabPanel("Decomposed Plot", h4("Displays the series, trend, and seasonality"), br(),
-                                   plotOutput("decomposed_plots")),
-                          id = "StatisticalTabs")
+            sidebarPanel(
+              h3("Generate Forecast"),
+              # Creates an input for the user to select which column in the data to forecast 
+              tags$hr(),
+              br(),
+              selectInput(inputId="i_task_select2", 
+                          "Select Series",
+                          '',
+                          ''),
+              br(),
+              # Creates an input for the user to select and filter the date range of the data for the column chosen 
+              dateRangeInput('dateRange3',
+                             label = 'Filter Historical Data by Date',
+                             start = (Sys.Date() - (3*365)), # Automatically displays the date 3 years past of current date as the start point
+                             end = Sys.Date()), # Automatically displays todays current date as the end point 
+              br(),
+              checkboxInput("checkbox3", 
+                            label = "Replace NAs with 0s", 
+                            value = FALSE),
+              actionButton(inputId="stat_button", "Begin Plots")
+            ),
+            mainPanel(
+              tabPanel(
+                "Statistical Information on Data",
+                tabsetPanel(type = "tabs",
+                            tabPanel("Statistics", h4("Statistics table for selected data"), br(), renderDataTable(""), value = 1),
+                            tabPanel("Seasonality Plot", h4("Displays seasonal data by year"), h6("Note: Data must have a minimum of 13 observations for seasonal plot"), br(),
+                                     plotOutput("seasonal_plot"), value = 2),
+                            tabPanel("ACF Plot", h4("Displays the correlation between the number of periods between observations"), br(),
+                                     plotOutput("acf_plot")),
+                            tabPanel("Decomposed Plot", h4("Displays the series, trend, and seasonality"), br(),
+                                     plotOutput("decomposed_plots")),
+                            id = "StatisticalTabs")
+              )
+            )
           )
         )
       )
-    )
   )
 )

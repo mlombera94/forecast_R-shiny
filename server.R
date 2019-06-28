@@ -28,7 +28,7 @@ shinyServer(function(input, output, session) {
       
       # Rename columns
       # df %>% setnames(old = c("SDATE", "LEVEL0", "LEVEL3", "LEVEL5", "LEVEL6", "SDATA4"),
-      #                 new = c("Date", "SKU", "Product", "Market", "Region", "Actuals"))
+      #                 new = c("Date", "SKU", "Product", "Country", "Region", "Actuals"))
       
       # Convert Date variable from chr to Date
       df$Date <- as.Date(df$Date, format = "%Y-%m-%d")
@@ -40,7 +40,7 @@ shinyServer(function(input, output, session) {
       df <- df %>%
         filter(Date < as.Date(Sys.Date() %m-% months(1)),
                !is.na(Region),
-               !is.na(Market))
+               !is.na(Country))
       
       # Recode observations
       # df$Region <- df$Region %>%
@@ -90,8 +90,8 @@ shinyServer(function(input, output, session) {
       if(is.null(data)){return(NULL)}
       
       selectInput(inputId = "market",
-                  label = "Select Market",
-                  choice = sort(unique(data$Market)),
+                  label = "Select Country",
+                  choice = sort(unique(data$Country)),
                   multiple = TRUE)
     })
     
@@ -101,8 +101,8 @@ shinyServer(function(input, output, session) {
       updateSelectInput(
         session, 
         "market", 
-        choices = sort(unique(data$Market)),
-        selected = if(input$all) unique(data$Market)
+        choices = sort(unique(data$Country)),
+        selected = if(input$all) unique(data$Country)
       )
     })
     
@@ -113,7 +113,7 @@ shinyServer(function(input, output, session) {
       if(is.null(data)){return(NULL)}
       
       data %>% 
-        filter(Market %in% input$market)
+        filter(Country %in% input$market)
     })
     
     # Create select option for all products available in the markets selected in previous filter
@@ -184,7 +184,7 @@ shinyServer(function(input, output, session) {
         filter(SKU %in% input$sku)
       
       subset_data <- subset_data %>% 
-        my.spread(key = c("Region", "Market", "SKU"), value = c("Actuals")) %>% 
+        my.spread(key = c("Region", "Country", "SKU"), value = c("Actuals")) %>% 
         pad(interval = "month")
       
       # Replace the filled in 99999.99 values with NA
@@ -223,6 +223,13 @@ shinyServer(function(input, output, session) {
       
       updateSelectInput(session,
                         'i_task_select',
+                        label = 'Select Series',
+                        choices = names(select(mySeries, -Date)),
+                        names(select(mySeries, -Date))[1])
+      
+      #REMOVEUPDATE
+      updateSelectInput(session,
+                        'i_task_select2',
                         label = 'Select Series',
                         choices = names(select(mySeries, -Date)),
                         names(select(mySeries, -Date))[1])
@@ -297,6 +304,33 @@ shinyServer(function(input, output, session) {
         select_(.dots = list(quote(Date), 
                              task_type)) 
     })  
+    
+    #REMOVEUPDATE
+    mySeries_filtered2 <- eventReactive(input$stat_button, {
+      
+      #### Input$stat_button ####
+      if (nrow(final_df())==0) 
+        return()
+      
+      # Use existing reactive structures
+      mySeries <- as.data.frame(final_df())
+      
+      isolate({
+        if(input$i_task_select2 ==""){
+          task_type = select_(mySeries,
+                              .dots = list(quote(-Date)))
+          task_type = names(task_type[1])
+        } else
+        {
+          task_type = input$i_task_select2
+        }
+      })
+      
+      #REMOVEUPDATE
+      mySeries_filtered2 <- mySeries %>% 
+        select_(.dots = list(quote(Date), 
+                             task_type))
+    })
     
     ########################################################## FORECAST MODELS ########################################################################
     
@@ -6960,8 +6994,14 @@ shinyServer(function(input, output, session) {
     output$decomposed_plots <- shiny::renderPlot({
       
       #use existing reactive structures
-      mySeries <- mySeries_raw()
-      mySeries_XTS <- mySeries_filtered()
+      mySeries <- final_df()
+      mySeries_XTS <- mySeries_filtered2()
+      
+      isolate({
+        mySeries_XTS <- mySeries_XTS %>%
+          filter(Date >= input$dateRange3[1] &
+                   Date <= input$dateRange3[2])
+      })
       
       if (nrow(mySeries_XTS) == 0){
         stop(
@@ -6976,18 +7016,25 @@ shinyServer(function(input, output, session) {
       
       #make inputs dependent on users hitting 'start forecasting' button
       isolate({
-        if(input$i_task_select ==""){
+        if(input$i_task_select2 ==""){
           task_type = select_(mySeries, .dots = list(quote(-Date)))
           task_type = names(task_type[1])
         } else
         {
-          task_type = input$i_task_select
+          task_type = input$i_task_select2
         }
       })
       
       myY <-  xts(select_(mySeries_XTS, task_type),
                   order.by=ymd(mySeries_XTS$Date))
       #monthly frequency
+      
+      isolate({
+        if (input$checkbox3) {
+          myY <- myY %>%
+            tidyr::replace_na(0)
+        }
+      })
       
       #Create a ts object from the xts object
       y1 <- as.numeric(format(start(myY), "%Y")) # Takes the the year of the first observation
@@ -7009,8 +7056,8 @@ shinyServer(function(input, output, session) {
     output$seasonal_plot <- shiny::renderPlot({
       
       # Use existing reactive structures
-      mySeries <- mySeries_raw()
-      mySeries_XTS <- mySeries_filtered()
+      mySeries <- final_df()
+      mySeries_XTS <- mySeries_filtered2()
       
       if (nrow(mySeries_XTS) == 0){
         stop(
@@ -7024,21 +7071,23 @@ shinyServer(function(input, output, session) {
       
       # Make inputs dependent on users hitting 'start forecasting' button
       isolate({
-        if(input$i_task_select ==""){
+        if(input$i_task_select2 ==""){
           task_type = select_(mySeries, .dots = list(quote(-Date)))
           task_type = names(task_type[1])
         } else {
-          task_type = input$i_task_select
+          task_type = input$i_task_select2
         }
       })
-      
-      if (input$checkbox2) {
-        mySeries_XTS[,2] <- mySeries_XTS[,2] %>%
-          tidyr::replace_na(0)
-      }
-      
+    
       myY <-  xts(select_(mySeries_XTS, task_type),
                   order.by=ymd(mySeries_XTS$Date))
+      
+      isolate({
+        if (input$checkbox3) {
+          myY <- myY %>%
+            tidyr::replace_na(0)
+        }
+      })
       
       #Create a ts object from the xts object
       y1 <- as.numeric(format(start(myY), "%Y")) # Takes the the year of the first observation
@@ -7063,8 +7112,8 @@ shinyServer(function(input, output, session) {
     output$acf_plot <- shiny::renderPlot({
       
       # Use existing reactive structures
-      mySeries <- mySeries_raw()
-      mySeries_XTS <- mySeries_filtered()
+      mySeries <- final_df()
+      mySeries_XTS <- mySeries_filtered2()
       
       if (nrow(mySeries_XTS) == 0){
         stop(
@@ -7078,16 +7127,23 @@ shinyServer(function(input, output, session) {
       
       # Make inputs dependent on users hitting 'start forecasting' button
       isolate({
-        if(input$i_task_select ==""){
+        if(input$i_task_select2 ==""){
           task_type = select_(mySeries, .dots = list(quote(-Date)))
           task_type = names(task_type[1])
         } else {
-          task_type = input$i_task_select
+          task_type = input$i_task_select2
         }
       })
       
       myY <-  xts(select_(mySeries_XTS, task_type),
                   order.by=ymd(mySeries_XTS$Date))
+      
+      isolate({
+        if (input$checkbox3) {
+          myY <- myY %>%
+            tidyr::replace_na(0)
+        }
+      })
       
       # Plot seasonality of data
       acfplot <- autoplot(acf(myY)) +
