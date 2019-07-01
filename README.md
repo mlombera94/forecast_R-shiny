@@ -46,3 +46,4 @@ There is currently no file format validation built in. Files should have format 
 |```dd/mm/yyyy```| ```SKU # 3```	|	```Product C```|```Country C```| ```Region C```	|	```Demand Value```|
 
 ## Current Bugs
+- If the user clicks on "Build Dataset" without having filled in all the sections, the application will crash, requiring the user to restart the application. 

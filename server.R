@@ -193,8 +193,11 @@ shinyServer(function(input, output, session) {
       # Remove SKUs that have less than the specified # of observations
       subset_data <- subset_data[, which(as.numeric(colSums(!is.na(subset_data))) >= as.numeric(input$observations))]
       
-      # Remove SKUs that have more than the speficied # of NA observation within the last # of specified months
-      subset_data <- subset_data[, which(as.numeric(colSums(tail(is.na(subset_data), n = as.numeric(input$months1)))) <= as.numeric(input$na_obs))]
+      # # Remove SKUs that have more than the speficied # of NA observation within the last # of specified months
+      # subset_data <- subset_data[, which(as.numeric(colSums(tail(is.na(subset_data), n = as.numeric(input$months1)))) <= as.numeric(input$na_obs))]
+      
+      # Remove SKUs that have more than the speficied # of NA observation within the last six months
+      subset_data <- subset_data[, which(as.numeric(colSums(tail(is.na(subset_data), n = 6))) <= as.numeric(input$na_obs))]
       
       if (input$checkbox) {
         if(ncol(subset_data) < 3) {
@@ -2497,8 +2500,11 @@ shinyServer(function(input, output, session) {
         forecast_n <- input$forecast_n
         recent_months <- input$i_recent_months2
         
-        # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
-        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        # # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
+        # myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        
+        # Remove SKUs that contain more than the specified number of zero observation within the last six recent months
+        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = 6), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
         
       })
       
@@ -2717,8 +2723,11 @@ shinyServer(function(input, output, session) {
         forecast_n <- input$forecast_n
         recent_months <- input$i_recent_months2
         
-        # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
-        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        # # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
+        # myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        
+        # Remove SKUs that contain more than the specified number of zero observation within the last six recent months
+        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = 6), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
       })
       
       # Creates a loading bar as the forecast is created
@@ -2973,8 +2982,11 @@ shinyServer(function(input, output, session) {
         forecast_n <- input$forecast_n
         recent_months <- input$i_recent_months2
         
-        # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
-        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        # # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
+        # myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        
+        # Remove SKUs that contain more than the specified number of zero observation within the last six recent months
+        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = 6), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
       })
       
       # Creates a loading bar as the forecast is created
@@ -3215,8 +3227,11 @@ shinyServer(function(input, output, session) {
         forecast_n <- input$forecast_n
         recent_months <- input$i_recent_months2
         
-        # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
-        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        # # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
+        # myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        
+        # Remove SKUs that contain more than the specified number of zero observation within the last six recent months
+        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = 6), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
       })
       
       withProgress(message = 'Generating ETS Forecasts... ',
@@ -3435,8 +3450,11 @@ shinyServer(function(input, output, session) {
         forecast_n <- input$forecast_n
         recent_months <- input$i_recent_months2
         
-        # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
-        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        # # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
+        # myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        
+        # Remove SKUs that contain more than the specified number of zero observation within the last six recent months
+        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = 6), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
       })
       
       withProgress(message = 'Generating Holt-Winters Multiplicative Forecasts... ',
@@ -3676,8 +3694,11 @@ shinyServer(function(input, output, session) {
         forecast_n <- input$forecast_n
         recent_months <- input$i_recent_months2
         
-        # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
-        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        # # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
+        # myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        
+        # Remove SKUs that contain more than the specified number of zero observation within the last six recent months
+        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = 6), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
       })
       
       withProgress(message = 'Generating Holt-Winters Multiplicative Damped Trend Forecasts... ',
@@ -3918,8 +3939,11 @@ shinyServer(function(input, output, session) {
         forecast_n <- input$forecast_n
         recent_months <- input$i_recent_months2
         
-        # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
-        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        # # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
+        # myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        
+        # Remove SKUs that contain more than the specified number of zero observation within the last six recent months
+        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = 6), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
       })
       
       withProgress(message = 'Generating Holt-Winters Additive Forecasts... ',
@@ -4145,8 +4169,11 @@ shinyServer(function(input, output, session) {
         forecast_n <- input$forecast_n
         recent_months <- input$i_recent_months2
         
-        # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
-        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        # # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
+        # myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        
+        # Remove SKUs that contain more than the specified number of zero observation within the last six recent months
+        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = 6), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
       })
       
       withProgress(message = 'Generating Holt-Winters Additive Damped Trend Forecasts... ',
@@ -4374,8 +4401,11 @@ shinyServer(function(input, output, session) {
         
         mySeries_lobf <- mySeries_lobf[, which(as.numeric(colSums(tail(mySeries_lobf == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
         
-        # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
-        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        # # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
+        # myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        
+        # Remove SKUs that contain more than the specified number of zero observation within the last six recent months
+        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = 6), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
       })
       
       withProgress(message = 'Generating Line of Best Fit Forecasts... ',
@@ -4615,8 +4645,11 @@ shinyServer(function(input, output, session) {
         forecast_n <- input$forecast_n
         recent_months <- input$i_recent_months2
         
-        # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
-        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        # # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
+        # myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        
+        # Remove SKUs that contain more than the specified number of zero observation within the last six recent months
+        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = 6), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
       })
       
       withProgress(message = 'Generating Moving Average Forecasts... ',
@@ -4833,8 +4866,11 @@ shinyServer(function(input, output, session) {
         forecast_n <- input$forecast_n
         recent_months <- input$i_recent_months2
         
-        # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
-        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        # # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
+        # myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        
+        # Remove SKUs that contain more than the specified number of zero observation within the last six recent months
+        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = 6), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
       })
       
       withProgress(message = 'Generating SES Forecasts... ',
@@ -5052,8 +5088,11 @@ shinyServer(function(input, output, session) {
         forecast_n <- input$forecast_n
         recent_months <- input$i_recent_months2
         
-        # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
-        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        # # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
+        # myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        
+        # Remove SKUs that contain more than the specified number of zero observation within the last six recent months
+        myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = 6), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
       })
       
       withProgress(message = 'Generating TBATS Forecasts... ',
@@ -7059,6 +7098,12 @@ shinyServer(function(input, output, session) {
       mySeries <- final_df()
       mySeries_XTS <- mySeries_filtered2()
       
+      isolate({
+        mySeries_XTS <- mySeries_XTS %>%
+          filter(Date >= input$dateRange3[1] &
+                   Date <= input$dateRange3[2])
+      })
+      
       if (nrow(mySeries_XTS) == 0){
         stop(
           showModal(modalDialog(
@@ -7114,6 +7159,12 @@ shinyServer(function(input, output, session) {
       # Use existing reactive structures
       mySeries <- final_df()
       mySeries_XTS <- mySeries_filtered2()
+      
+      isolate({
+        mySeries_XTS <- mySeries_XTS %>%
+          filter(Date >= input$dateRange3[1] &
+                   Date <= input$dateRange3[2])
+      })
       
       if (nrow(mySeries_XTS) == 0){
         stop(
