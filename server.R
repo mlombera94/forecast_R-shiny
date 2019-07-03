@@ -42,6 +42,9 @@ shinyServer(function(input, output, session) {
                !is.na(Region),
                !is.na(Country))
       
+      df$Region <- df$Region %>% 
+        recode(N.A = "NA")
+      
       # Recode observations
       # df$Region <- df$Region %>%
       #   recode(CLIN = "CLIN",
@@ -4399,7 +4402,9 @@ shinyServer(function(input, output, session) {
         forecast_n <- input$forecast_n
         recent_months <- input$i_recent_months2
         
-        mySeries_lobf <- mySeries_lobf[, which(as.numeric(colSums(tail(mySeries_lobf == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        # mySeries_lobf <- mySeries_lobf[, which(as.numeric(colSums(tail(mySeries_lobf == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
+        
+        mySeries_lobf <- mySeries_lobf[, which(as.numeric(colSums(tail(mySeries_lobf == 0, n = 6), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
         
         # # Remove SKUs that contain more than the specified number of zero observation within the specified number of recent months
         # myY <- myY[, which(as.numeric(colSums(tail(myY == 0, n = input$months), na.rm = TRUE)) <= as.numeric(input$zero_obs))]
@@ -5308,6 +5313,7 @@ shinyServer(function(input, output, session) {
                                                                scrollX = TRUE,
                                                                scrollY = 700,
                                                                scroller = TRUE),{
+                                                                 
                                                                  arima <- arima()
                                                                  arfima <- arfima()
                                                                  croston <- croston()
@@ -5320,6 +5326,7 @@ shinyServer(function(input, output, session) {
                                                                  ma <- ma_df()
                                                                  ses <- ses()
                                                                  tbats <- tbats_df()
+                                                                 
                                                                  final_batchdf <- as.data.frame(rbind(arima, arfima, croston, ets, hw_M, hw_MD, hw_A, hw_AD, lobf, ma, ses, tbats)) %>% 
                                                                    arrange(Product, Model)
                                                                  
@@ -5375,7 +5382,10 @@ shinyServer(function(input, output, session) {
     ###############################################################################################################################################################################
     ###############################################################################################################################################################################
     
-    output$model_performance <- DT::renderDataTable({
+    output$model_performance <- DT::renderDataTable(extensions = "Scroller",
+                                                    options = list(deferRender = TRUE,
+                                                                   scrollY = 700,
+                                                                   scroller = TRUE),{
       
       # Use existing reactive structures
       mySeries <- final_df()

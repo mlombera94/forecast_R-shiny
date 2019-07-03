@@ -5,6 +5,6 @@ account: mlombera
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 948011
-bundleId: 2186831
+bundleId: 2192684
 url: https://mlombera.shinyapps.io/forecast_r-shiny/
-when: 1561759971.14824
+when: 1562023796.37443

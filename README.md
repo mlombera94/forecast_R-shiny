@@ -47,3 +47,4 @@ There is currently no file format validation built in. Files should have format 
 
 ## Current Bugs
 - If the user clicks on "Build Dataset" without having filled in all the sections, the application will crash, requiring the user to restart the application. 
+- If all SKUs are filtered out by exceeding the maximum number of zeros within the last six observations, clicking on "Start Batch Forecasting!" will result in an error "subscripts out of bounds" as there are no SKUs being forecasted. 
