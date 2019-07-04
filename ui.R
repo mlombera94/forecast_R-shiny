@@ -61,6 +61,8 @@ shinyUI(
           fluidRow( 
             # Creates a sidebar 
             sidebarPanel(
+              tags$hr(),
+              tags$hr(),
               h3("Build Dataset"),
               # Creates a break in the webpage 
               tags$hr(),
@@ -172,6 +174,8 @@ shinyUI(
         fluidPage(
           fluidRow(
             sidebarPanel(
+              tags$hr(),
+              tags$hr(),
               h3("Generate Forecast"),
               # Creates an input for the user to select which column in the data to forecast 
               tags$hr(),
@@ -227,6 +231,8 @@ shinyUI(
               h6("Click on the tabs at the top right to switch between models"),
               id = "Sidebar Panel 2", width = 3),
             mainPanel(
+              tags$hr(),
+              tags$hr(),
               h2("Forecast Results"),
               br(),
               tabPanel("Forecast Plot",
@@ -266,7 +272,9 @@ shinyUI(
         fluidPage(
           fluidRow(
             sidebarPanel(
-              h3("Generate Batch Forecast"),
+              tags$hr(),
+              tags$hr(),
+              h3("Generate Batch Forecasts"),
               tabsetPanel(
                 tabPanel(
                   h5("Adjust Data"),
@@ -388,6 +396,8 @@ shinyUI(
               ),
               id = "Sidebar Panel 2", width = 3),
             mainPanel(
+              tags$hr(),
+              tags$hr(),
               h2("Forecast Results"),
               br(),
               tabPanel("Forecast Data Table",
@@ -406,7 +416,9 @@ shinyUI(
         fluidPage(
           fluidRow(
             sidebarPanel(
-              h3("Generate Forecast"),
+              tags$hr(),
+              tags$hr(),
+              h3("Visualize Data Further"),
               # Creates an input for the user to select which column in the data to forecast 
               tags$hr(),
               br(),
@@ -427,18 +439,29 @@ shinyUI(
               actionButton(inputId="stat_button", "Begin Plots")
             ),
             mainPanel(
-              tabPanel(
+              # tabPanel(
                 "Statistical Information on Data",
+                tags$hr(),
+                tags$hr(),
                 tabsetPanel(type = "tabs",
                             # tabPanel("Statistics", h4("Statistics table for selected data"), br(), renderDataTable(""), value = 1),
-                            tabPanel("Seasonality Plot", h4("Displays seasonal data by year"), h6("Note: Data must have a minimum of 13 observations for seasonal plot"), br(),
-                                     plotOutput("seasonal_plot"), value = 2),
-                            tabPanel("ACF Plot", h4("Displays the correlation between the number of periods between observations"), br(),
+                            tabPanel("Seasonality Plot", 
+                                     h4("Displays seasonal data by year"), 
+                                     h6("Note: Data must have a minimum of 13 observations for seasonal plot"), 
+                                     br(),
+                                     plotOutput("seasonal_plot")),
+                            tabPanel("ACF Plot", 
+                                     h4("Displays the correlation between the number of periods between observations"), 
+                                     h6("Note: Data may not contain NA observations, must replace NAs with zeros"), 
+                                     br(),
                                      plotOutput("acf_plot")),
-                            tabPanel("Decomposed Plot", h4("Displays the series, trend, and seasonality"), br(),
+                            tabPanel("Decomposed Plot", 
+                                     h4("Displays the series, trend, and seasonality"), 
+                                     h6("Note: Data may not contain NA observations, must replace NAs with zeros"),
+                                     br(),
                                      plotOutput("decomposed_plots")),
                             id = "StatisticalTabs")
-              )
+              # )
             )
           )
         )
