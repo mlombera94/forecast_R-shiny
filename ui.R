@@ -138,11 +138,7 @@ shinyUI(
                                      "3" = "3",
                                      "4" = "4",
                                      "5" = "5",
-                                     "6" = "6", 
-                                     "7" = "7",
-                                     "8" = "8",
-                                     "9" = "9",
-                                     "10" = "10"),
+                                     "6" = "6"),
                           multiple = FALSE, 
                           width = "50%"),
               tags$hr(),
@@ -188,8 +184,10 @@ shinyUI(
               # Creates an input for the user to select and filter the date range of the data for the column chosen 
               dateRangeInput('dateRange',
                              label = 'Filter Historical Data by Date',
-                             start = (Sys.Date() - (3*365)), # Automatically displays the date 3 years past of current date as the start point
-                             end = Sys.Date()), # Automatically displays todays current date as the end point 
+                             # start = (Sys.Date() - (3*365)), # Automatically displays the date 3 years past of current date as the start point
+                             # end = Sys.Date()), # Automatically displays todays current date as the end point 
+                             start = "2015-11-01",
+                             end = "2018-10-01"),
               br(),
               checkboxInput("checkbox2", 
                             label = "Replace NAs with 0s", 
@@ -285,8 +283,10 @@ shinyUI(
                   # Creates an input for the user to select and filter the date range of the data for the column chosen 
                   dateRangeInput('dateRange2',
                                  label = 'Filter Historical Data by Date',
-                                 start = (Sys.Date() - (3*365)), # Automatically displays the date 3 years past of current date as the start point
-                                 end = Sys.Date()), # Automatically displays todays current date as the end point 
+                                 # start = (Sys.Date() - (3*365)), # Automatically displays the date 3 years past of current date as the start point
+                                 # end = Sys.Date()), # Automatically displays todays current date as the end point 
+                                 start = "2015-11-01",
+                                 end = "2018-10-01"),
                   tags$hr(),
                   # h5("Remove SKUs with more than the selected number of observed zeros within the selected number of recent periods"),
                   # br(),
@@ -430,8 +430,10 @@ shinyUI(
               # Creates an input for the user to select and filter the date range of the data for the column chosen 
               dateRangeInput('dateRange3',
                              label = 'Filter Historical Data by Date',
-                             start = (Sys.Date() - (3*365)), # Automatically displays the date 3 years past of current date as the start point
-                             end = Sys.Date()), # Automatically displays todays current date as the end point 
+                             # start = (Sys.Date() - (3*365)), # Automatically displays the date 3 years past of current date as the start point
+                             # end = Sys.Date()), # Automatically displays todays current date as the end point
+                             start = "2015-11-01",
+                             end = "2018-10-01"),
               br(),
               checkboxInput("checkbox3", 
                             label = "Replace NAs with 0s", 
