@@ -37,7 +37,7 @@ This shiny app allows users to forecast monthly demand by applying various time 
 - There is also the option to visualize the time series data for individual SKUs such as seasonality plots, ACF plots, and decomposed plots. 
 
 ## File Format
-There is currently no file format validation built in. Files should have format as per the table below. A data set example is provided <a href="https://github.com/mlombera94/forecast_R-shiny/blob/master/dataset.csv" target="_blank">here</a>. 
+There is currently no file format validation built in. Files should have format as per the table below. A data set example is provided <a href="https://raw.githubusercontent.com/mlombera94/forecast_R-shiny/master/dataset.csv" target="_blank">here</a>. 
   
 |```Date```| ```SKU #```| ```Product```| ```Country```| ```Region```| ```Demand```|
 |:---------------|:---------------|:---------------|:--------------|:---------------|:------------------|
@@ -47,5 +47,6 @@ There is currently no file format validation built in. Files should have format 
 
 ## Current Bugs
 - If the user clicks on "Build Dataset" without having filled in all the sections, the application will crash, requiring the user to restart the application. 
+- If the user clicks on "Build Dataset" and none of SKUs selected satisfy the condition for having the minimum number of observations or exceeding the maximum number of NA observations, the application will crash as there are no SKUs to create a dataset
 - If all SKUs are filtered out by exceeding the maximum number of zeros within the last six observations, clicking on "Start Batch Forecasting!" will result in an error "subscripts out of bounds" as there are no SKUs being forecasted. 
 - ACF plots and Decomposition plots will not work if NAs are present in the data, therefore the user must replace NA values with zero values. 

@@ -47,7 +47,8 @@ shinyUI(
       theme=shinytheme("spacelab"),
       # uses a dark background and light text for the navigation bar
       inverse=TRUE,
-      
+      # Fixes the navigation bar at the top of the page
+      position = "fixed-top",
       # Creates the first tab for the navigation bar at the top of the webpage
       tabPanel(
         "Import and Build Dataset",
@@ -429,7 +430,7 @@ shinyUI(
               tabPanel(
                 "Statistical Information on Data",
                 tabsetPanel(type = "tabs",
-                            tabPanel("Statistics", h4("Statistics table for selected data"), br(), renderDataTable(""), value = 1),
+                            # tabPanel("Statistics", h4("Statistics table for selected data"), br(), renderDataTable(""), value = 1),
                             tabPanel("Seasonality Plot", h4("Displays seasonal data by year"), h6("Note: Data must have a minimum of 13 observations for seasonal plot"), br(),
                                      plotOutput("seasonal_plot"), value = 2),
                             tabPanel("ACF Plot", h4("Displays the correlation between the number of periods between observations"), br(),
