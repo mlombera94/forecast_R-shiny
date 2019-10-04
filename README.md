@@ -4,6 +4,9 @@
 ## Summary
 This shiny app allows users to forecast monthly demand by applying various time series models and comparing the performance of each model. There are four main functions of this application including:
 - Uploading raw demand data in a csv format and filtering data
+
+<img width="1440" alt="Screen Shot 2019-10-04 at 1 26 03 PM" src="https://user-images.githubusercontent.com/20471627/66237886-076eaa80-e6ab-11e9-9639-f42411808999.png">
+
 - Single SKU forecasts and visualization
 - Batch SKU forecasts
 - Statistical analysis/visualization
