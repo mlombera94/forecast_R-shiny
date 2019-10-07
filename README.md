@@ -8,6 +8,9 @@ This shiny app allows users to forecast monthly demand by applying various time 
 ![gif1](https://user-images.githubusercontent.com/20471627/66239497-dd1eec00-e6ae-11e9-9777-9fa4f9550538.gif)
 
 - Single SKU forecasts and visualization
+
+![gif2](https://user-images.githubusercontent.com/20471627/66339136-5872de80-e8f7-11e9-9f05-650156aff007.gif)
+
 - Batch SKU forecasts
 - Statistical analysis/visualization
 
